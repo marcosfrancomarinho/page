@@ -1,439 +1,1856 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
+import { motion } from "framer-motion";
 
-/**
- * JurisPag — Landing Page
- * Inspirado em contaazul.com: azul vibrante, amarelo de contraste,
- * tipografia grande e redonda, muita animação.
- *
- * Estilização 100% Tailwind CSS. Requer Tailwind já configurado no projeto.
- * As poucas coisas que o Tailwind não cobre por padrão (fontes do Google
- * e @keyframes customizados) ficam no <style> no fim do arquivo — cole
- * esse bloco no seu index.css se preferir tirar daqui.
- */
+import {
+  ArrowRight,
+  Check,
+  Bell,
+  TrendingUp,
+  Users,
+  CreditCard
+} from "lucide-react";
 
-/* ------------------------------------------------------------------ */
-/* Hook: revela um elemento com fade/slide quando entra na viewport   */
-/* ------------------------------------------------------------------ */
-function useReveal<T extends HTMLElement>() {
-  const ref = useRef<T | null>(null);
-  const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          io.unobserve(el);
-        }
-      },
-      { threshold: 0.18 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
 
-  return { ref, visible };
-}
+function MiniCard({
+  icon,
+  title,
+  value
+}: {
+  icon: React.ReactNode;
+  title: string;
+  value: string;
+}) {
 
-/* ------------------------------------------------------------------ */
-/* Hook: conta de 0 até um valor-alvo quando o elemento aparece       */
-/* ------------------------------------------------------------------ */
-function useCountUp(target: number, visible: boolean, duration = 1400) {
-  const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    if (!visible) return;
-    let raf = 0;
-    const start = performance.now();
-    const tick = (t: number) => {
-      const p = Math.min(1, (t - start) / duration);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setValue(Math.round(target * eased));
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [visible, target, duration]);
-
-  return value;
-}
-
-/* ------------------------------------------------------------------ */
-/* Classe utilitária para o efeito de reveal (fade + slide-up)        */
-/* ------------------------------------------------------------------ */
-const revealCls = (visible: boolean) =>
-  `transition-all duration-700 ease-out ${
-    visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-  }`;
-
-const Reveal: React.FC<{
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
-}> = ({ children, delay = 0, className = "" }) => {
-  const { ref, visible } = useReveal<HTMLDivElement>();
   return (
-    <div ref={ref} className={`${revealCls(visible)} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
-      {children}
+    <div className="
+      bg-gray-50
+      rounded-2xl
+      p-4
+    ">
+
+      <div className="
+        text-blue-600
+        mb-2
+      ">
+        {icon}
+      </div>
+
+      <p className="
+        text-xs
+        text-gray-400
+        font-semibold
+      ">
+        {title}
+      </p>
+
+      <strong className="
+        text-lg
+        font-black
+      ">
+        {value}
+      </strong>
+
     </div>
   );
-};
+}
 
-/* ------------------------------------------------------------------ */
-/* Dados */
-/* ------------------------------------------------------------------ */
-type Feature = {
+
+
+function FeatureCard({
+  icon,
+  title,
+  text
+}: {
   icon: React.ReactNode;
   title: string;
   text: string;
-};
-
-const FEATURES: Feature[] = [
-  {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-        <path d="M3 3v18h18M7 15l4-5 3 3 5-7" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
-    title: "Fluxo de recebimentos",
-    text: "Veja o que entra, o que atrasa e o que ainda vai vencer, em um painel só.",
-  },
-  {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-        <path
-          d="M21 11.5a8.4 8.4 0 01-8.9 8.4 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 01-.9-3.8A8.5 8.5 0 0112.5 3h.5a8.5 8.5 0 018 8.5z"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
-    title: "Cobrança automática",
-    text: "Lembretes por WhatsApp e e-mail antes do vencimento, sem precisar lembrar.",
-  },
-  {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-        <path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
-    title: "Acordos e parcelas",
-    text: "Cadastre um acordo, quebre em parcelas e acompanhe até a última.",
-  },
-];
-
-const LOGOS = [
-  "Nogueira Advocacia",
-  "Ribeiro & Bastos",
-  "Salgado Sociedade",
-  "Cartório Almeida",
-  "Costa & Martins",
-  "Ferreira Associados",
-];
-
-const STATS: { value: number; suffix: string; label: string }[] = [
-  { value: 94, suffix: "%", label: "de adimplência média na plataforma" },
-  { value: 340, suffix: "+", label: "escritórios usando o JurisPag" },
-  { value: 12, suffix: "h/mês", label: "economizadas com cobrança automática" },
-];
-
-/* ------------------------------------------------------------------ */
-/* App */
-/* ------------------------------------------------------------------ */
-export default function App() {
-  const heroRef = useRef<HTMLDivElement | null>(null);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const statsBlock = useReveal<HTMLDivElement>();
-
-  const onHeroMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = heroRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width - 0.5;
-    const py = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: px, y: py });
-  };
+}) {
 
   return (
-    <div className="bg-white text-[#0a1f2c] font-['Inter',_system-ui,_sans-serif] overflow-x-hidden">
-      {/* ---------------- NAV ---------------- */}
-      <nav className="sticky top-0 z-50 bg-white/85 backdrop-blur-md border-b border-[#0a1f44]/[0.06]">
-        <div className="max-w-[1180px] mx-auto px-7 py-4 flex items-center gap-7">
-          <a href="#top" className="flex items-center gap-2 font-['Baloo_2',_sans-serif] font-extrabold text-xl text-[#0a1f44]">
-            <span className="w-3 h-3 rounded-[4px] bg-gradient-to-br from-[#ffc93c] to-[#2f5cff]" />
-            JurisPag
-          </a>
-          <div className="hidden md:flex gap-7 flex-1 justify-center">
-            <a href="#produto" className="text-sm font-semibold text-[#31446e]/85 hover:opacity-100 hover:text-[#31446e]">
-              Produto
-            </a>
-            <a href="#numeros" className="text-sm font-semibold text-[#31446e]/85 hover:opacity-100 hover:text-[#31446e]">
-              Números
-            </a>
-            <a href="#depoimento" className="text-sm font-semibold text-[#31446e]/85 hover:opacity-100 hover:text-[#31446e]">
-              Clientes
-            </a>
-          </div>
-          <a
-            href="#cta"
-            className="inline-flex items-center rounded-full bg-[#0a1f44] text-white font-bold text-[13.5px] px-5 py-2.5 transition-all hover:bg-[#123a8c] active:scale-95"
-          >
-            Testar grátis
-          </a>
-        </div>
-      </nav>
+    <motion.div
 
-      {/* ---------------- HERO ---------------- */}
-      <header
-        id="top"
-        ref={heroRef}
-        onMouseMove={onHeroMove}
-        className="relative overflow-hidden pt-24 px-7 bg-gradient-to-b from-[#eef2ff] via-[#f4f7ff] to-[#f4f7ff]"
-      >
-        <div
-          className="absolute w-[340px] h-[340px] -top-32 -right-20 rounded-full opacity-55 blur-[2px] animate-[float_11s_ease-in-out_infinite] transition-transform duration-300 ease-out bg-[radial-gradient(circle_at_30%_30%,#2f5cff,#5b7fff_70%)]"
-          style={{ transform: `translate(${tilt.x * 30}px, ${tilt.y * 30}px)` }}
-        />
-        <div
-          className="absolute w-[220px] h-[220px] bottom-10 -left-16 rounded-full opacity-55 blur-[2px] animate-[float_8s_ease-in-out_infinite_.6s] transition-transform duration-300 ease-out bg-[radial-gradient(circle_at_30%_30%,#ffc93c,#ffe08a_70%)]"
-          style={{ transform: `translate(${tilt.x * -22}px, ${tilt.y * -22}px)` }}
-        />
-        <div
-          className="absolute w-[130px] h-[130px] top-32 left-[8%] rounded-full opacity-35 blur-[2px] animate-[float_7s_ease-in-out_infinite_1.1s] transition-transform duration-300 ease-out bg-[radial-gradient(circle_at_30%_30%,#2f5cff,#8fa4ff_70%)]"
-          style={{ transform: `translate(${tilt.x * 16}px, ${tilt.y * -16}px)` }}
-        />
+      whileHover={{
+        y:-10
+      }}
 
-        <div className="relative max-w-[720px] mx-auto text-center pb-24">
-          <Reveal>
-            <span className="inline-flex items-center gap-1.5 bg-white border border-[#2f5cff]/[0.18] text-[#123a8c] text-[13px] font-bold px-4 py-2 rounded-full mb-6 shadow-[0_8px_20px_rgba(47,92,255,0.08)]">
-              ✦ Feito para advocacia e cartórios
-            </span>
-          </Reveal>
+      className="
+        rounded-[32px]
+        bg-[#f8faff]
+        p-8
+        border
+        border-blue-100
+        hover:shadow-xl
+        transition
+      "
+    >
 
-          <Reveal delay={80}>
-            <h1 className="font-['Baloo_2',_sans-serif] font-bold text-[38px] sm:text-[52px] md:text-[68px] leading-[1.05] tracking-[-1.5px] text-[#0a1f44] mb-5">
-              Juntos, a gente
-              <br />
-              <span className="bg-gradient-to-r from-[#2f5cff] via-[#5b7fff] to-[#ffc93c] bg-clip-text text-transparent">
-                dá conta
-              </span>{" "}
-              do seu
-              <br />
-              caixa jurídico.
-            </h1>
-          </Reveal>
+      <div className="
+        w-14
+        h-14
+        rounded-2xl
+        bg-blue-600
+        flex
+        items-center
+        justify-center
+        text-3xl
+        mb-6
+      ">
+        {icon}
+      </div>
 
-          <Reveal delay={160}>
-            <p className="text-lg leading-relaxed text-[#4a5a78] max-w-[520px] mx-auto mb-8">
-              Honorários, acordos e parcelas organizados em um só lugar. O JurisPag cobra automaticamente e te
-              mostra exatamente quanto vai entrar este mês.
-            </p>
-          </Reveal>
 
-          <Reveal delay={240}>
-            <div className="flex gap-4 justify-center flex-wrap mb-14">
-              <a
-                href="#cta"
-                className="inline-flex items-center rounded-full bg-[#ffc93c] text-[#0a1f2c] font-bold text-base px-8 py-4 shadow-[0_10px_26px_rgba(255,201,60,0.5)] transition-all hover:shadow-[0_14px_34px_rgba(255,201,60,0.65)] hover:-translate-y-0.5 active:scale-95"
-              >
-                Testar grátis
-              </a>
-              <a
-                href="#produto"
-                className="inline-flex items-center rounded-full bg-white text-[#123a8c] font-bold text-base px-8 py-4 border-2 border-[#dbe3f7] transition-all hover:border-[#2f5cff] hover:text-[#2f5cff] active:scale-95"
-              >
-                Ver como funciona
-              </a>
-            </div>
-          </Reveal>
+      <h3 className="
+        text-xl
+        font-black
+        mb-3
+      ">
+        {title}
+      </h3>
 
-          <Reveal delay={320}>
-            <div className="relative bg-white rounded-[28px] p-6 max-w-[420px] mx-auto shadow-[0_40px_90px_rgba(10,31,68,0.16)] animate-[cardFloat_6s_ease-in-out_infinite]">
-              <div className="flex items-start justify-between mb-4">
-                <div className="text-left">
-                  <span className="block text-xs text-[#7a88a3] mb-1">Recebido este mês</span>
-                  <strong className="font-['Baloo_2',_sans-serif] text-2xl font-extrabold text-[#0a1f44]">
-                    R$ 132.980
-                  </strong>
-                </div>
-                <span className="text-[11.5px] font-bold text-[#2f9e6f] bg-[#2f9e6f]/10 px-2.5 py-1.5 rounded-full">
-                  ● 94% em dia
-                </span>
-              </div>
-              <div className="flex items-end gap-1.5 h-16">
-                {[38, 55, 44, 70, 60, 88, 76].map((h, i) => (
-                  <i
-                    key={i}
-                    className={`flex-1 rounded-t-md animate-[grow_.9s_cubic-bezier(0.2,0.8,0.2,1)_both] ${
-                      i >= 5 ? "bg-gradient-to-b from-[#ffe08a] to-[#ffc93c]" : "bg-gradient-to-b from-[#5b7fff] to-[#2f5cff]"
-                    }`}
-                    style={{ height: `${h}%`, animationDelay: `${i * 90}ms` }}
-                  />
-                ))}
-              </div>
-            </div>
-          </Reveal>
-        </div>
 
-        <svg className="relative block w-full h-20 -mt-px" viewBox="0 0 1440 120" preserveAspectRatio="none">
-          <path d="M0,64 C320,120 1120,0 1440,64 L1440,120 L0,120 Z" fill="#f4f7ff" />
-        </svg>
-      </header>
+      <p className="
+        text-gray-500
+        leading-relaxed
+      ">
+        {text}
+      </p>
 
-      {/* ---------------- MARQUEE ---------------- */}
-      <section className="bg-[#f4f7ff] py-6 overflow-hidden border-b border-[#0a1f44]/5">
-        <div className="w-full overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
-          <div className="flex gap-14 w-max animate-[marquee_22s_linear_infinite]">
-            {[...LOGOS, ...LOGOS].map((name, i) => (
-              <span key={i} className="font-['Baloo_2',_sans-serif] font-bold text-[17px] text-[#8896b5] whitespace-nowrap">
-                {name}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ---------------- FEATURES ---------------- */}
-      <section id="produto" className="max-w-[1080px] mx-auto px-7 py-24">
-        <Reveal className="text-center mb-14">
-          <span className="block text-[12.5px] font-extrabold tracking-[1.2px] uppercase text-[#2f5cff] mb-3">
-            Produto
-          </span>
-          <h2 className="font-['Baloo_2',_sans-serif] text-[28px] md:text-[40px] leading-[1.15] tracking-[-1px] text-[#0a1f44]">
-            Tudo que sai e entra da
-            <br />
-            banca,{" "}
-            <span className="relative inline-block">
-              <span className="absolute left-0 right-0 bottom-0.5 h-3 bg-[#ffc93c]/55 -z-10 rounded" />
-              num só lugar.
-            </span>
-          </h2>
-        </Reveal>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {FEATURES.map((f, i) => (
-            <Reveal key={f.title} delay={i * 120}>
-              <div className="bg-[#f4f7ff] rounded-3xl p-8 h-full transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_24px_50px_rgba(10,31,68,0.12)] hover:bg-white">
-                <div className="w-[52px] h-[52px] rounded-2xl grid place-items-center mb-5 bg-gradient-to-br from-[#2f5cff] to-[#5b7fff] text-white">
-                  <span className="w-6 h-6">{f.icon}</span>
-                </div>
-                <h3 className="font-['Baloo_2',_sans-serif] text-lg text-[#0a1f44] mb-2">{f.title}</h3>
-                <p className="text-[14.5px] leading-relaxed text-[#5b6b82] m-0">{f.text}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* ---------------- STATS ---------------- */}
-      <section id="numeros" className="max-w-[1080px] mx-auto px-7 py-24">
-        <div
-          ref={statsBlock.ref}
-          className="relative overflow-hidden rounded-[40px] bg-[#0a1f44] text-white p-12 md:p-16 bg-[radial-gradient(circle_at_85%_0%,rgba(255,201,60,0.14),transparent_45%),radial-gradient(circle_at_5%_100%,rgba(47,92,255,0.3),transparent_45%)]"
-        >
-          <div className="relative grid md:grid-cols-3 gap-8 text-center">
-            {STATS.map((s, i) => (
-              <StatBlock key={s.label} {...s} visible={statsBlock.visible} delay={i * 140} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ---------------- TESTIMONIAL ---------------- */}
-      <section id="depoimento" className="max-w-[1080px] mx-auto px-7 py-24">
-        <Reveal className="max-w-[640px] mx-auto text-center relative">
-          <svg className="w-[52px] mx-auto mb-4" viewBox="0 0 40 32" fill="none">
-            <path
-              d="M0 32V19.7C0 8.4 6.4 1.4 16.6 0l1.6 5.2c-6 1.6-9 5.4-9 10.2h9V32H0zm22.4 0V19.7C22.4 8.4 28.8 1.4 39 0l1.6 5.2c-6 1.6-9 5.4-9 10.2h9V32H22.4z"
-              fill="#2f5cff"
-              opacity=".18"
-            />
-          </svg>
-          <p className="font-['Baloo_2',_sans-serif] text-[20px] md:text-[28px] leading-snug text-[#0a1f44] mb-7">
-            Parei de perguntar quem tinha pagado. Abro o painel e já sei o que entrou, o que atrasou e o que
-            falta cobrar.
-          </p>
-          <div className="flex items-center justify-center gap-3">
-            <span className="w-11 h-11 rounded-full grid place-items-center font-extrabold text-sm text-white bg-gradient-to-br from-[#2f5cff] to-[#5b7fff]">
-              CN
-            </span>
-            <div className="flex flex-col text-left text-[13.5px]">
-              <strong className="text-[#0a1f44]">Dra. Camila Nogueira</strong>
-              <span className="text-[#7a88a3]">Nogueira Advocacia</span>
-            </div>
-          </div>
-        </Reveal>
-      </section>
-
-      {/* ---------------- CTA ---------------- */}
-      <section id="cta" className="max-w-[1080px] mx-auto px-7 py-24">
-        <Reveal className="relative overflow-hidden text-center rounded-[32px] bg-gradient-to-br from-[#123a8c] to-[#2f5cff] text-white px-8 py-16">
-          <div className="absolute w-[340px] h-[340px] rounded-full opacity-30 -top-36 -right-24 animate-[float_10s_ease-in-out_infinite] bg-[radial-gradient(circle,#ffc93c,transparent_70%)]" />
-          <h2 className="relative font-['Baloo_2',_sans-serif] text-[28px] md:text-[40px] mb-3">
-            Seu escritório{" "}
-            <span className="bg-gradient-to-r from-[#2f5cff] via-[#5b7fff] to-[#ffc93c] bg-clip-text text-transparent">
-              no azul
-            </span>
-            <br />
-            começa aqui.
-          </h2>
-          <p className="relative text-base text-[#d7deff] mb-7">Sem cartão de crédito. Leva menos de 5 minutos pra começar.</p>
-          <a
-            href="#"
-            className="relative inline-flex items-center rounded-full bg-[#ffc93c] text-[#0a1f2c] font-bold text-base px-8 py-4 shadow-[0_10px_26px_rgba(255,201,60,0.5)] transition-all hover:shadow-[0_14px_34px_rgba(255,201,60,0.65)] hover:-translate-y-0.5 active:scale-95"
-          >
-            Testar grátis por 14 dias
-          </a>
-        </Reveal>
-      </section>
-
-      {/* ---------------- FOOTER ---------------- */}
-      <footer className="max-w-[1080px] mx-auto px-7 pt-10 pb-14 flex items-center justify-between flex-wrap gap-3.5 border-t border-[#0a1f44]/10">
-        <span className="flex items-center gap-2 font-['Baloo_2',_sans-serif] font-extrabold text-[17px] text-[#0a1f44]">
-          <span className="w-3 h-3 rounded-[4px] bg-gradient-to-br from-[#ffc93c] to-[#2f5cff]" />
-          JurisPag
-        </span>
-        <span className="text-[13px] text-[#8896b5]">© 2026 JurisPag. Todos os direitos reservados.</span>
-      </footer>
-
-      {/* Google Fonts + @keyframes que o Tailwind não tem por padrão.
-          Se preferir, mova este bloco para o seu index.css / index.html. */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
-
-        @keyframes float{0%,100%{translate:0 0}50%{translate:0 -22px}}
-        @keyframes cardFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-12px) rotate(1deg)}}
-        @keyframes grow{from{transform:scaleY(0);transform-origin:bottom}to{transform:scaleY(1)}}
-        @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-        @media (prefers-reduced-motion: reduce){
-          *{animation-duration:.01ms !important;transition-duration:.01ms !important}
-        }
-      `}</style>
-    </div>
+    </motion.div>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* Sub-componente: bloco de estatística animada                       */
-/* ------------------------------------------------------------------ */
-const StatBlock: React.FC<{
-  value: number;
-  suffix: string;
-  label: string;
-  visible: boolean;
-  delay: number;
-}> = ({ value, suffix, label, visible, delay }) => {
-  const count = useCountUp(value, visible);
-  return (
-    <div className={revealCls(visible)} style={{ transitionDelay: `${delay}ms` }}>
-      <span className="block font-['Baloo_2',_sans-serif] font-extrabold text-[34px] md:text-[52px] text-[#ffc93c] tracking-[-1px]">
-        {count}
-        {suffix}
-      </span>
-      <span className="block text-sm text-[#c3cee8] mt-2">{label}</span>
-    </div>
-  );
-};
+
+
+
+export default function App() {
+
+return (
+
+<div className="
+  min-h-screen
+  overflow-hidden
+  bg-[#f8faff]
+  text-[#071A3D]
+">
+
+
+
+{/* NAVBAR */}
+
+<nav className="
+ fixed
+ top-0
+ left-0
+ right-0
+ z-50
+ bg-white/80
+ backdrop-blur-xl
+ border-b
+ border-blue-100
+">
+
+<div className="
+ max-w-7xl
+ mx-auto
+ px-6
+ py-5
+ flex
+ items-center
+ justify-between
+">
+
+
+<div className="
+ flex
+ items-center
+ gap-3
+">
+
+
+<div className="
+ w-10
+ h-10
+ rounded-xl
+ bg-gradient-to-br
+ from-blue-600
+ to-indigo-500
+ flex
+ items-center
+ justify-center
+ text-white
+ font-black
+ shadow-lg
+">
+
+J
+
+</div>
+
+
+<span className="
+ text-2xl
+ font-extrabold
+ tracking-tight
+">
+
+Juris<span className="text-blue-600">
+Pag
+</span>
+
+</span>
+
+
+</div>
+
+
+
+
+<div className="
+ hidden
+ md:flex
+ gap-8
+ text-sm
+ font-semibold
+ text-gray-600
+">
+
+
+<a className="hover:text-blue-600 transition">
+Produto
+</a>
+
+
+<a className="hover:text-blue-600 transition">
+Benefícios
+</a>
+
+
+<a className="hover:text-blue-600 transition">
+Clientes
+</a>
+
+
+</div>
+
+
+
+
+<button className="
+ rounded-full
+ bg-[#071A3D]
+ text-white
+ px-6
+ py-3
+ font-bold
+ hover:bg-blue-700
+ transition
+ shadow-lg
+">
+
+Testar grátis
+
+</button>
+
+
+</div>
+
+</nav>
+
+
+
+
+
+
+
+{/* HERO */}
+
+
+<section className="
+ relative
+ pt-40
+ px-6
+ pb-32
+">
+
+
+<div className="
+ absolute
+ -top-40
+ -right-40
+ w-[500px]
+ h-[500px]
+ bg-blue-400/20
+ blur-3xl
+ rounded-full
+"/>
+
+
+
+<div className="
+ absolute
+ bottom-0
+ -left-40
+ w-[400px]
+ h-[400px]
+ bg-yellow-300/20
+ blur-3xl
+ rounded-full
+"/>
+
+
+
+
+<div className="
+ max-w-7xl
+ mx-auto
+ grid
+ lg:grid-cols-2
+ gap-16
+ items-center
+">
+
+
+
+<motion.div
+
+initial={{
+ opacity:0,
+ y:40
+}}
+
+animate={{
+ opacity:1,
+ y:0
+}}
+
+transition={{
+ duration:.8
+}}
+
+>
+
+
+<span className="
+ inline-flex
+ items-center
+ gap-2
+ px-4
+ py-2
+ rounded-full
+ bg-blue-100
+ text-blue-700
+ font-bold
+ text-sm
+ mb-6
+">
+
+✦ Gestão financeira jurídica inteligente
+
+</span>
+
+
+
+
+<h1 className="
+ text-5xl
+ md:text-7xl
+ font-black
+ leading-[1.05]
+ tracking-tight
+">
+
+
+Controle seus
+
+
+<span className="
+ block
+ bg-gradient-to-r
+ from-blue-600
+ to-indigo-500
+ bg-clip-text
+ text-transparent
+">
+
+honorários
+
+</span>
+
+
+sem perder dinheiro.
+
+
+</h1>
+
+
+
+
+<p className="
+ mt-6
+ text-lg
+ text-gray-600
+ max-w-xl
+ leading-relaxed
+">
+
+Organize pagamentos, acordos e cobranças automaticamente.
+Tenha uma visão completa do financeiro do seu escritório.
+
+</p>
+
+
+
+
+<div className="
+ mt-10
+ flex
+ flex-wrap
+ gap-4
+">
+
+
+<button className="
+ group
+ flex
+ items-center
+ gap-3
+ bg-yellow-400
+ px-8
+ py-4
+ rounded-full
+ font-extrabold
+ shadow-xl
+ hover:-translate-y-1
+ transition
+">
+
+Começar grátis
+
+
+<ArrowRight className="
+ group-hover:translate-x-1
+ transition
+"/>
+
+
+</button>
+
+
+
+<button className="
+ px-8
+ py-4
+ rounded-full
+ border-2
+ border-gray-200
+ font-bold
+ hover:border-blue-500
+ transition
+">
+
+Ver demonstração
+
+</button>
+
+
+
+</div>
+
+
+
+
+<div className="
+ mt-10
+ flex
+ gap-8
+ text-sm
+ font-semibold
+ text-gray-500
+">
+
+
+<span className="flex gap-2">
+
+<Check className="text-green-500"/>
+
+Sem cartão
+
+</span>
+
+
+
+<span className="flex gap-2">
+
+<Check className="text-green-500"/>
+
+14 dias grátis
+
+</span>
+
+
+
+</div>
+
+
+
+
+</motion.div>
+{/* DASHBOARD MOCKUP */}
+
+<motion.div
+
+initial={{
+ opacity:0,
+ scale:.9,
+ x:50
+}}
+
+animate={{
+ opacity:1,
+ scale:1,
+ x:0
+}}
+
+transition={{
+ duration:.9,
+ delay:.2
+}}
+
+className="
+ relative
+ flex
+ justify-center
+"
+
+>
+
+
+<div className="
+ absolute
+ inset-0
+ bg-blue-500/20
+ blur-3xl
+ rounded-full
+"/>
+
+
+
+<motion.div
+
+animate={{
+ y:[0,-12,0]
+}}
+
+transition={{
+ duration:5,
+ repeat:Infinity
+}}
+
+className="
+ relative
+ w-full
+ max-w-[460px]
+ bg-white
+ rounded-[32px]
+ shadow-[0_40px_100px_rgba(7,26,61,.18)]
+ border
+ border-gray-100
+ p-6
+"
+
+>
+
+
+<div className="
+ flex
+ justify-between
+ items-center
+ mb-8
+">
+
+
+<div>
+
+<p className="
+ text-sm
+ text-gray-400
+ font-semibold
+">
+
+Receita este mês
+
+</p>
+
+
+<h3 className="
+ text-3xl
+ font-black
+ mt-1
+">
+
+R$ 132.980
+
+</h3>
+
+
+</div>
+
+
+
+<div className="
+ flex
+ items-center
+ gap-2
+ bg-green-100
+ text-green-600
+ px-3
+ py-2
+ rounded-full
+ text-sm
+ font-bold
+">
+
+
+<TrendingUp size={16}/>
+
++18%
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div className="
+ h-40
+ rounded-3xl
+ bg-gradient-to-br
+ from-blue-50
+ to-indigo-50
+ p-5
+ flex
+ items-end
+ gap-3
+">
+
+
+{
+[30,45,35,70,55,90,75].map(
+(height,index)=>(
+
+<motion.div
+
+key={index}
+
+initial={{
+height:0
+}}
+
+animate={{
+height:`${height}%`
+}}
+
+transition={{
+duration:.8,
+delay:index*.1
+}}
+
+className={`
+ flex-1
+ rounded-t-xl
+ ${
+ index > 4
+ ?
+ "bg-yellow-400"
+ :
+ "bg-blue-600"
+ }
+`}
+
+/>
+
+))
+}
+
+
+
+</div>
+
+
+
+
+
+
+<div className="
+ grid
+ grid-cols-3
+ gap-3
+ mt-6
+">
+
+
+<MiniCard
+
+icon={<Users size={18}/>}
+
+title="Clientes"
+
+value="248"
+
+/>
+
+
+
+<MiniCard
+
+icon={<CreditCard size={18}/>}
+
+title="Pagamentos"
+
+value="94%"
+
+/>
+
+
+
+<MiniCard
+
+icon={<Bell size={18}/>}
+
+title="Alertas"
+
+value="12"
+
+/>
+
+
+
+</div>
+
+
+
+
+
+
+<motion.div
+
+animate={{
+ x:[0,10,0]
+}}
+
+transition={{
+ duration:4,
+ repeat:Infinity
+}}
+
+className="
+ absolute
+ -right-8
+ top-24
+ bg-white
+ shadow-xl
+ rounded-2xl
+ p-4
+ flex
+ gap-3
+ items-center
+ border
+ border-gray-100
+"
+
+
+>
+
+
+<div className="
+ w-10
+ h-10
+ rounded-full
+ bg-green-100
+ flex
+ items-center
+ justify-center
+ text-green-600
+">
+
+✓
+
+</div>
+
+
+
+<div>
+
+<p className="
+ text-sm
+ font-bold
+">
+
+Pagamento recebido
+
+</p>
+
+
+<span className="
+ text-xs
+ text-gray-400
+">
+
+Cliente atualizado
+
+</span>
+
+
+</div>
+
+
+</motion.div>
+
+
+</motion.div>
+
+
+</motion.div>
+
+
+</div>
+
+</section>
+
+
+
+
+
+
+
+{/* BENEFÍCIOS */}
+
+
+<section className="
+ py-28
+ px-6
+ bg-white
+">
+
+
+<div className="
+ max-w-7xl
+ mx-auto
+">
+
+
+<div className="
+ text-center
+ max-w-3xl
+ mx-auto
+">
+
+
+<span className="
+ text-blue-600
+ font-extrabold
+ uppercase
+ tracking-widest
+ text-sm
+">
+
+Por que usar o JurisPag
+
+</span>
+
+
+
+<h2 className="
+ mt-4
+ text-4xl
+ md:text-6xl
+ font-black
+ tracking-tight
+">
+
+Tudo que seu escritório precisa
+para crescer organizado.
+
+</h2>
+
+
+
+<p className="
+ mt-6
+ text-gray-500
+ text-lg
+">
+
+Automatize cobranças, acompanhe pagamentos
+e tenha controle financeiro sem planilhas.
+
+</p>
+
+
+</div>
+
+
+
+
+
+<div className="
+ mt-16
+ grid
+ md:grid-cols-3
+ gap-8
+">
+
+
+
+<FeatureCard
+
+icon="⚡"
+
+title="Cobrança automática"
+
+text="
+Envie lembretes de pagamento e reduza atrasos
+sem precisar cobrar manualmente.
+"
+
+/>
+
+
+
+<FeatureCard
+
+icon="📊"
+
+title="Visão financeira"
+
+text="
+Saiba exatamente quanto entrou,
+quanto falta receber e seus próximos valores.
+"
+
+/>
+
+
+
+<FeatureCard
+
+icon="🔒"
+
+title="Controle seguro"
+
+text="
+Dados organizados e protegidos
+para seu escritório trabalhar tranquilo.
+"
+
+/>
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+{/* ANTES E DEPOIS */}
+
+
+<section className="
+ py-28
+ px-6
+ bg-[#f8faff]
+">
+
+
+<div className="
+ max-w-6xl
+ mx-auto
+">
+
+
+<div className="
+ text-center
+ mb-14
+">
+
+
+<h2 className="
+ text-4xl
+ md:text-5xl
+ font-black
+">
+
+Pare de perder tempo
+com processos manuais.
+
+</h2>
+
+
+</div>
+
+
+
+
+
+
+<div className="
+ grid
+ md:grid-cols-2
+ gap-8
+">
+
+
+
+
+
+<div className="
+ rounded-[32px]
+ bg-white
+ border
+ border-red-100
+ p-10
+ shadow-sm
+">
+
+
+<div className="
+ text-red-500
+ font-black
+ text-xl
+ mb-6
+">
+
+❌ Antes do JurisPag
+
+</div>
+
+
+
+
+<ul className="
+ space-y-5
+ text-gray-600
+ font-medium
+">
+
+
+<li>
+❌ Planilhas espalhadas
+</li>
+
+
+<li>
+❌ Cobranças esquecidas
+</li>
+
+
+<li>
+❌ Falta de visão do caixa
+</li>
+
+
+<li>
+❌ Tempo perdido conferindo pagamentos
+</li>
+
+
+</ul>
+
+
+</div>
+
+
+
+
+
+
+
+<div className="
+ rounded-[32px]
+ bg-[#071A3D]
+ text-white
+ p-10
+ shadow-xl
+">
+
+
+<div className="
+ text-yellow-400
+ font-black
+ text-xl
+ mb-6
+">
+
+✅ Com JurisPag
+
+</div>
+
+
+
+<ul className="
+ space-y-5
+ text-blue-100
+ font-medium
+">
+
+
+<li>
+✓ Tudo centralizado
+</li>
+
+
+<li>
+✓ Cobranças automáticas
+</li>
+
+
+<li>
+✓ Dashboard em tempo real
+</li>
+
+
+<li>
+✓ Mais controle financeiro
+</li>
+
+
+</ul>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+{/* NÚMEROS */}
+
+<section className="
+ py-24
+ px-6
+">
+
+
+<div className="
+ max-w-6xl
+ mx-auto
+ bg-gradient-to-br
+ from-blue-700
+ to-indigo-700
+ rounded-[40px]
+ p-10
+ md:p-16
+ text-white
+">
+
+
+<div className="
+ grid
+ md:grid-cols-3
+ gap-10
+ text-center
+">
+
+
+<div>
+
+<h3 className="
+ text-5xl
+ md:text-6xl
+ font-black
+ text-yellow-400
+">
+
+94%
+
+</h3>
+
+
+<p className="
+ mt-3
+ text-blue-100
+ font-semibold
+">
+
+Pagamentos acompanhados
+
+</p>
+
+</div>
+
+
+
+
+
+<div>
+
+<h3 className="
+ text-5xl
+ md:text-6xl
+ font-black
+ text-yellow-400
+">
+
+340+
+
+</h3>
+
+
+<p className="
+ mt-3
+ text-blue-100
+ font-semibold
+">
+
+Escritórios conectados
+
+</p>
+
+</div>
+
+
+
+
+
+<div>
+
+<h3 className="
+ text-5xl
+ md:text-6xl
+ font-black
+ text-yellow-400
+">
+
+12h
+
+</h3>
+
+
+<p className="
+ mt-3
+ text-blue-100
+ font-semibold
+">
+
+Economizadas por mês
+
+</p>
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+{/* DEPOIMENTOS */}
+
+
+<section className="
+ py-28
+ px-6
+ bg-white
+">
+
+
+<div className="
+ max-w-6xl
+ mx-auto
+">
+
+
+
+<div className="
+ text-center
+ mb-16
+">
+
+
+<span className="
+ text-blue-600
+ font-extrabold
+ uppercase
+ tracking-widest
+ text-sm
+">
+
+Clientes
+
+</span>
+
+
+
+<h2 className="
+ mt-4
+ text-4xl
+ md:text-5xl
+ font-black
+">
+
+Quem usa o JurisPag
+tem mais controle.
+
+</h2>
+
+
+</div>
+
+
+
+
+
+
+
+<div className="
+ grid
+ md:grid-cols-3
+ gap-8
+">
+
+
+
+<motion.div
+
+whileHover={{
+scale:1.03
+}}
+
+className="
+ bg-[#f8faff]
+ rounded-[32px]
+ p-8
+ border
+ border-blue-100
+ hover:shadow-xl
+ transition
+"
+
+>
+
+
+<div className="
+ text-yellow-400
+ text-xl
+ mb-5
+">
+
+★★★★★
+
+</div>
+
+
+<p className="
+ text-gray-600
+ leading-relaxed
+">
+
+"Antes eu precisava conferir várias planilhas.
+Agora vejo tudo em poucos segundos."
+
+</p>
+
+
+
+<div className="
+ mt-6
+">
+
+
+<strong className="
+ block
+ font-black
+">
+
+Dra. Camila
+
+</strong>
+
+
+<span className="
+ text-gray-400
+ text-sm
+">
+
+Nogueira Advocacia
+
+</span>
+
+
+</div>
+
+
+</motion.div>
+
+
+
+
+
+
+
+<motion.div
+
+whileHover={{
+scale:1.03
+}}
+
+className="
+ bg-[#f8faff]
+ rounded-[32px]
+ p-8
+ border
+ border-blue-100
+ hover:shadow-xl
+ transition
+"
+
+>
+
+
+<div className="
+ text-yellow-400
+ text-xl
+ mb-5
+">
+
+★★★★★
+
+</div>
+
+
+<p className="
+ text-gray-600
+ leading-relaxed
+">
+
+"A cobrança automática mudou nossa rotina.
+Conseguimos reduzir atrasos."
+
+</p>
+
+
+
+<div className="
+ mt-6
+">
+
+
+<strong className="
+ block
+ font-black
+">
+
+Dr. Rafael
+
+</strong>
+
+
+<span className="
+ text-gray-400
+ text-sm
+">
+
+Ribeiro & Associados
+
+</span>
+
+
+</div>
+
+
+</motion.div>
+
+
+
+
+
+
+
+<motion.div
+
+whileHover={{
+scale:1.03
+}}
+
+className="
+ bg-[#f8faff]
+ rounded-[32px]
+ p-8
+ border
+ border-blue-100
+ hover:shadow-xl
+ transition
+"
+
+>
+
+
+<div className="
+ text-yellow-400
+ text-xl
+ mb-5
+">
+
+★★★★★
+
+</div>
+
+
+<p className="
+ text-gray-600
+ leading-relaxed
+">
+
+"Finalmente temos uma visão clara
+do financeiro do escritório."
+
+</p>
+
+
+
+<div className="
+ mt-6
+">
+
+
+<strong className="
+ block
+ font-black
+">
+
+Dra. Ana
+
+</strong>
+
+
+<span className="
+ text-gray-400
+ text-sm
+">
+
+Costa Jurídico
+
+</span>
+
+
+</div>
+
+
+</motion.div>
+
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+{/* CTA FINAL */}
+
+
+
+<section className="
+ px-6
+ py-20
+">
+
+
+<div className="
+ max-w-6xl
+ mx-auto
+ relative
+ overflow-hidden
+ rounded-[45px]
+ bg-gradient-to-br
+ from-[#071A3D]
+ to-blue-700
+ px-8
+ py-20
+ text-center
+ text-white
+">
+
+
+<div className="
+ absolute
+ w-[400px]
+ h-[400px]
+ rounded-full
+ bg-yellow-400/20
+ blur-3xl
+ top-[-160px]
+ right-[-20px]
+"/>
+
+
+
+
+
+<div className="
+ relative
+">
+
+
+<h2 className="
+ text-4xl
+ md:text-6xl
+ font-black
+ leading-tight
+">
+
+Seu escritório no azul
+
+<br/>
+
+<span className="
+ text-yellow-400
+">
+
+começa hoje.
+
+</span>
+
+
+</h2>
+
+
+
+
+
+<p className="
+ mt-6
+ text-blue-100
+ text-lg
+ max-w-xl
+ mx-auto
+">
+
+Teste gratuitamente e descubra
+como simplificar sua gestão financeira.
+
+</p>
+
+
+
+
+
+
+<button className="
+ mt-10
+ bg-yellow-400
+ text-[#071A3D]
+ px-10
+ py-5
+ rounded-full
+ font-black
+ text-lg
+ shadow-xl
+ hover:-translate-y-1
+ transition
+">
+
+Começar agora 🚀
+
+</button>
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+{/* FOOTER */}
+
+
+<footer className="
+ px-6
+ py-10
+ border-t
+ border-gray-100
+ bg-white
+">
+
+
+<div className="
+ max-w-7xl
+ mx-auto
+ flex
+ flex-col
+ md:flex-row
+ justify-between
+ items-center
+ gap-5
+">
+
+
+
+<div className="
+ flex
+ items-center
+ gap-3
+">
+
+
+<div className="
+ w-10
+ h-10
+ rounded-xl
+ bg-blue-600
+ text-white
+ flex
+ items-center
+ justify-center
+ font-black
+">
+
+J
+
+</div>
+
+
+
+
+<strong className="
+ text-xl
+ font-black
+">
+
+Juris<span className="
+ text-blue-600
+">
+Pag
+</span>
+
+</strong>
+
+
+</div>
+
+
+
+
+
+<p className="
+ text-gray-400
+ text-sm
+">
+
+© 2026 JurisPag. Todos os direitos reservados.
+
+</p>
+
+
+
+
+
+<div className="
+ flex
+ gap-6
+ text-sm
+ font-semibold
+ text-gray-500
+">
+
+
+<a className="
+ hover:text-blue-600
+ transition
+">
+
+Termos
+
+</a>
+
+
+
+<a className="
+ hover:text-blue-600
+ transition
+">
+
+Privacidade
+
+</a>
+
+
+
+
+<a className="
+ hover:text-blue-600
+ transition
+">
+
+Contato
+
+</a>
+
+
+
+</div>
+
+
+
+</div>
+
+
+</footer>
+
+
+
+
+</div>
+
+);
+
+}
