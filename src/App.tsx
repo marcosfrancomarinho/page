@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Bell, Check, ChevronUp, CreditCard, Shield, Sparkles, TrendingUp, Users } from 'lucide-react';
 
 // =========================================================================
