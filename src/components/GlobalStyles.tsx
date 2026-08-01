@@ -1,42 +1,162 @@
 export function GlobalStyles() {
   return (
     <style>{`
+
+      /* FLOAT */
       @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-12px); }
+        0%, 100% {
+          transform: translate3d(0, 0, 0);
+        }
+
+        50% {
+          transform: translate3d(0, -12px, 0);
+        }
       }
+
+
       .animate-float {
         animation: float 5s ease-in-out infinite;
+        will-change: transform;
       }
+
+
+
+      /* BOB */
       @keyframes bob {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
+        0%, 100% {
+          transform: translate3d(0, 0, 0);
+        }
+
+        50% {
+          transform: translate3d(0, -10px, 0);
+        }
       }
+
+
       .animate-bob {
         animation: bob 3s ease-in-out infinite;
+        will-change: transform;
       }
+
+
+
+      /* SHIMMER */
       @keyframes shimmer {
-        0% { transform: translateX(-120%) skewX(-25deg); }
-        60%, 100% { transform: translateX(220%) skewX(-25deg); }
+
+        0% {
+          transform: translate3d(-120%,0,0) skewX(-25deg);
+        }
+
+        60%,100% {
+          transform: translate3d(220%,0,0) skewX(-25deg);
+        }
+
       }
+
+
       .animate-shimmer {
+
         animation: shimmer 3.2s ease-in-out infinite;
+
+        will-change: transform;
+
+        overflow: hidden;
+
       }
+
+
+
+      /* PULSE */
       @keyframes pulseScale {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.06); }
+
+        0%,100% {
+          transform: scale(1);
+        }
+
+        50% {
+          transform: scale(1.06);
+        }
+
       }
+
+
       .animate-pulse-scale {
+
         animation: pulseScale 2s ease-in-out infinite;
+
+        will-change: transform;
+
       }
+
+
+
+      /* REVEAL */
+      @keyframes fadeUp {
+
+        from {
+          opacity: 0;
+          transform: translate3d(0,30px,0);
+        }
+
+
+        to {
+          opacity:1;
+          transform: translate3d(0,0,0);
+        }
+
+      }
+
+
+      .animate-fade-up {
+
+        animation: fadeUp .8s ease-out forwards;
+
+      }
+
+
+
+
+      /* MOBILE PERFORMANCE */
+      @media(max-width:640px){
+
+        .animate-float{
+          animation-duration:7s;
+        }
+
+
+        .animate-bob{
+          animation-duration:5s;
+        }
+
+
+        .animate-pulse-scale{
+          animation-duration:4s;
+        }
+
+      }
+
+
+
+      /* ACESSIBILIDADE */
       @media (prefers-reduced-motion: reduce) {
-        .animate-float, .animate-bob, .animate-shimmer, .animate-pulse-scale {
-          animation: none !important;
+
+        *,
+        *::before,
+        *::after {
+
+          animation-duration:0.01ms !important;
+
+          animation-iteration-count:1 !important;
+
+          transition-duration:0.01ms !important;
+
+          scroll-behavior:auto !important;
+
         }
-        * {
-          transition-duration: 0.01ms !important;
-        }
+
       }
+
+
     `}</style>
   );
 }

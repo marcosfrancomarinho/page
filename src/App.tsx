@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
+
 import { GlobalStyles } from './components/GlobalStyles';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Benefits } from './components/Benefits';
-import { Numbers } from './/components/Numbers';
+import { Numbers } from './components/Numbers';
 import { HowItWorks } from './components/HowItWorks';
 import { Testimonials } from './components/Testimonials';
 import { FinalCTA } from './components/FinalCTA';
@@ -16,33 +17,87 @@ export default function App() {
   const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
+
     const onScroll = () => {
-      const doc = document.documentElement;
-      const scrollable = doc.scrollHeight - doc.clientHeight;
-      const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
-      setScrollProgress(progress);
-      setShowTop(window.scrollY > 400);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const doc = document.documentElement;
+
+          const scrollable = doc.scrollHeight - doc.clientHeight;
+
+          const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
+
+          setScrollProgress(progress);
+
+          setShowTop(window.scrollY > 400);
+
+          ticking = false;
+        });
+
+        ticking = true;
+      }
     };
 
-    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('scroll', onScroll, {
+      passive: true,
+    });
+
     onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
   }, []);
 
   return (
-    <div className="font-sans">
+    <div
+      className='
+        font-sans
+
+        overflow-x-hidden
+
+        bg-[#F5F7FA]
+
+        text-[#08162F]
+      '
+    >
       <GlobalStyles />
+
       <ScrollProgressBar progress={scrollProgress} />
 
       <Navbar />
-      <div className="h-20" />
 
-      <Hero />
-      <Benefits />
-      <Numbers />
-      <HowItWorks />
-      <Testimonials />
-      <FinalCTA />
+      {/* ESPAÇO DA NAVBAR */}
+      <div
+        className='
+          h-16
+          sm:h-20
+        '
+      />
+
+      <main>
+        <section id='inicio'>
+          <Hero />
+        </section>
+
+        <section id='recursos'>
+          <Benefits />
+        </section>
+
+        <Numbers />
+
+        <section id='como-funciona'>
+          <HowItWorks />
+        </section>
+
+        <section id='depoimentos'>
+          <Testimonials />
+        </section>
+
+        <FinalCTA />
+      </main>
+
       <Footer />
 
       <ScrollToTopButton visible={showTop} />

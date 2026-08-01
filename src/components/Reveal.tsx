@@ -5,18 +5,40 @@ interface RevealProps {
   children: ReactNode;
   delay?: number;
   className?: string;
+  direction?: 'up' | 'down' | 'left' | 'right';
 }
 
-export function Reveal({ children, delay = 0, className = '' }: RevealProps) {
-  const [ref, visible] = useReveal<HTMLDivElement>();
+export function Reveal({ children, delay = 0, className = '', direction = 'up' }: RevealProps) {
+  const [ref, visible] = useReveal<HTMLDivElement>({
+    threshold: 0.15,
+  });
+
+  const hiddenPosition = {
+    up: 'translate-y-10',
+    down: '-translate-y-10',
+    left: '-translate-x-10',
+    right: 'translate-x-10',
+  };
 
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ease-out ${
-        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-14'
-      } ${className}`}
-      style={{ transitionDelay: visible ? `${delay}ms` : '0ms' }}
+      className={`
+        transition-[opacity,transform]
+
+        duration-700
+
+        ease-out
+
+        will-change-transform
+
+        ${visible ? 'opacity-100 translate-x-0 translate-y-0' : `opacity-0 ${hiddenPosition[direction]}`}
+
+        ${className}
+      `}
+      style={{
+        transitionDelay: visible ? `${delay}ms` : '0ms',
+      }}
     >
       {children}
     </div>

@@ -11,10 +11,63 @@ const STATS: Stat[] = [
 
 export function Numbers() {
   return (
-    <section className="relative py-28 bg-[#08162F] overflow-hidden">
-      <GlowBlob className="bg-[#183A72] w-[500px] h-[500px] left-1/2 -translate-x-1/2 opacity-20" />
+    <section
+      className='
+        relative
+        overflow-hidden
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-10">
+        bg-[#08162F]
+
+        py-16
+        sm:py-20
+        lg:py-28
+      '
+    >
+      <GlowBlob
+        className='
+          bg-[#183A72]
+
+          w-64
+          h-64
+
+          sm:w-96
+          sm:h-96
+
+          lg:w-[500px]
+          lg:h-[500px]
+
+          left-1/2
+
+          -translate-x-1/2
+
+          opacity-20
+        '
+      />
+
+      <div
+        className='
+          relative
+          z-10
+
+          max-w-7xl
+
+          mx-auto
+
+          px-5
+          sm:px-8
+          lg:px-10
+
+          grid
+
+          grid-cols-1
+          xs:grid-cols-2
+          lg:grid-cols-4
+
+          gap-4
+          sm:gap-6
+          lg:gap-10
+        '
+      >
         {STATS.map((stat, index) => (
           <NumberCard key={stat.label} value={stat.value} label={stat.label} index={index} />
         ))}
