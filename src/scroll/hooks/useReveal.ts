@@ -6,12 +6,13 @@ import { useEffect, useRef, useState, type RefObject } from 'react';
  */
 export function useReveal<T extends HTMLElement = HTMLDivElement>(
   options: IntersectionObserverInit = {},
-): [RefObject<T>, boolean] {
-  const ref = useRef<T>(null);
+): [RefObject<T | null>, boolean] {
+  const ref = useRef<T | null>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const node = ref.current;
+
     if (!node) return;
 
     const observer = new IntersectionObserver(
@@ -21,12 +22,18 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(
           observer.disconnect();
         }
       },
-      { threshold: 0.15, ...options },
+      {
+        threshold: 0.15,
+        ...options,
+      },
     );
 
     observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [options]);
 
   return [ref, visible];
 }
