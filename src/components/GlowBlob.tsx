@@ -7,20 +7,33 @@ export function GlowBlob({ className = '' }: GlowBlobProps) {
     <div
       className={`
         absolute
+
         rounded-full
 
-        blur-[70px]
-        sm:blur-[100px]
-        lg:blur-[120px]
+        blur-[80px]
+        sm:blur-[110px]
+        lg:blur-[140px]
 
-        opacity-40
-        sm:opacity-50
+
+        opacity-30
+        sm:opacity-40
+        lg:opacity-50
+
 
         pointer-events-none
 
+
         -z-0
 
+
+        mix-blend-screen
+
+
+        animate-glow
+
+
         will-change-transform
+
 
         ${className}
       `}

@@ -1,7 +1,9 @@
 import { CreditCard, TrendingUp, Users } from 'lucide-react';
+
 import { GlowBlob } from './GlowBlob';
 import { SectionTitle } from './SectionTitle';
 import { StepCard } from './StepCard';
+
 import type { Step } from '../scroll/types';
 
 const STEPS: Step[] = [
@@ -29,7 +31,7 @@ export function HowItWorks() {
         relative
         overflow-hidden
 
-        bg-[#F5F7FA]
+        bg-[#050B18]
 
         py-20
         sm:py-28
@@ -46,11 +48,15 @@ export function HowItWorks() {
           sm:w-96
           sm:h-96
 
-          lg:w-[450px]
-          lg:h-[450px]
+          lg:w-[500px]
+          lg:h-[500px]
 
-          -left-32
+
+          -left-40
+
           top-10
+
+          opacity-30
         '
       />
 
@@ -58,26 +64,32 @@ export function HowItWorks() {
         className='
           bg-[#C89B3C]
 
-          w-52
-          h-52
+          w-48
+          h-48
 
           sm:w-72
           sm:h-72
 
-          lg:w-[380px]
-          lg:h-[380px]
+          lg:w-[350px]
+          lg:h-[350px]
 
-          right-[-80px]
+
+          right-[-100px]
+
           bottom-0
+
+          opacity-20
         '
       />
 
       <SectionTitle
         badge='COMO FUNCIONA'
         title='Comece em poucos minutos'
-        description={
-          'Uma plataforma simples de configurar,\npoderosa para utilizar e pronta para\ncrescer junto com seu escritório.'
-        }
+        description={`
+          Uma plataforma simples de configurar,
+          poderosa para utilizar e pronta para
+          crescer junto com seu escritório.
+          `}
       />
 
       <div
@@ -88,15 +100,18 @@ export function HowItWorks() {
 
           mx-auto
 
+
           mt-12
           sm:mt-16
           lg:mt-24
+
 
           px-5
           sm:px-8
         '
       >
-        {/* LINHA DESKTOP */}
+        {/* LINHA CENTRAL */}
+
         <div
           className='
             absolute
@@ -104,18 +119,27 @@ export function HowItWorks() {
             hidden
             lg:block
 
+
             left-1/2
 
             top-0
             bottom-0
 
-            w-1
+
+            w-[2px]
+
 
             bg-linear-to-b
 
-            from-[#C89B3C]
-            via-[#183A72]
-            to-[#08162F]
+            from-transparent
+
+            via-[#E1BF72]
+
+            to-transparent
+
+
+            opacity-70
+
 
             rounded-full
           '
@@ -124,7 +148,9 @@ export function HowItWorks() {
         <div
           className='
             space-y-6
+
             sm:space-y-8
+
             lg:space-y-0
           '
         >

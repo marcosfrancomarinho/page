@@ -1,8 +1,7 @@
+import { ArrowRight } from 'lucide-react';
 import { GlowBlob } from './GlowBlob';
 
-const PRODUCT_LINKS: string[] = ['Recursos', 'Planos', 'Integrações', 'API'];
-
-const COMPANY_LINKS: string[] = ['Sobre', 'Contato', 'Blog', 'Carreiras'];
+const PRODUCT_LINKS = ['Recursos', 'Benefícios', 'Como funciona'];
 
 export function Footer() {
   return (
@@ -11,7 +10,7 @@ export function Footer() {
         relative
         overflow-hidden
 
-        bg-[#08162F]
+        bg-[#050B18]
 
         pt-16
         sm:pt-20
@@ -24,8 +23,8 @@ export function Footer() {
         className='
           bg-[#183A72]
 
-          w-64
-          h-64
+          w-72
+          h-72
 
           sm:w-96
           sm:h-96
@@ -36,7 +35,9 @@ export function Footer() {
           left-1/2
           -translate-x-1/2
 
-          opacity-50
+          top-0
+
+          opacity-25
         '
       />
 
@@ -46,30 +47,40 @@ export function Footer() {
           z-10
 
           max-w-7xl
+
           mx-auto
 
           px-5
           sm:px-8
           lg:px-10
 
+
           grid
 
           grid-cols-1
+
           sm:grid-cols-2
+
           lg:grid-cols-4
 
+
           gap-10
-          sm:gap-12
         '
       >
-        {/* BRAND */}
-        <div className='sm:col-span-2 lg:col-span-1'>
+        {/* MARCA */}
+
+        <div
+          className='
+            sm:col-span-2
+            lg:col-span-2
+          '
+        >
           <h2
             className='
-              text-2xl
-              sm:text-3xl
+              text-3xl
 
               font-black
+
               text-white
             '
           >
@@ -79,115 +90,110 @@ export function Footer() {
 
           <p
             className='
-              mt-4
-              sm:mt-6
+              mt-5
 
-              text-sm
-              sm:text-base
+              max-w-sm
 
               text-gray-400
 
               leading-7
             '
           >
-            Plataforma inteligente para gestão financeira de escritórios de advocacia.
+            Gestão financeira inteligente para escritórios que querem mais controle e produtividade.
           </p>
+
+          <button
+            className='
+              mt-7
+
+              flex
+              items-center
+              gap-2
+
+
+              rounded-full
+
+              px-6
+              py-3
+
+
+              bg-[#E1BF72]
+
+              text-[#08162F]
+
+              font-bold
+
+
+              transition
+
+              hover:scale-105
+            '
+          >
+            Testar grátis
+            <ArrowRight size={18} />
+          </button>
         </div>
 
-        {/* PRODUTO */}
+        {/* RECURSOS */}
+
         <div>
           <h4
             className='
-            text-white
-            font-bold
-            mb-4
-            sm:mb-6
-          '
+              text-white
+
+              font-bold
+
+              mb-5
+            '
           >
-            Produto
+            Plataforma
           </h4>
 
           <ul
             className='
-            space-y-3
-            sm:space-y-4
-            text-gray-400
-            text-sm
-            sm:text-base
-          '
+              space-y-4
+
+              text-gray-400
+            '
           >
-            {PRODUCT_LINKS.map((link) => (
+            {PRODUCT_LINKS.map((item) => (
               <li
-                key={link}
+                key={item}
                 className='
-                  cursor-pointer
                   hover:text-[#E1BF72]
+
                   transition
+
+                  cursor-pointer
                 '
               >
-                {link}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* EMPRESA */}
-        <div>
-          <h4
-            className='
-            text-white
-            font-bold
-            mb-4
-            sm:mb-6
-          '
-          >
-            Empresa
-          </h4>
-
-          <ul
-            className='
-            space-y-3
-            sm:space-y-4
-            text-gray-400
-            text-sm
-            sm:text-base
-          '
-          >
-            {COMPANY_LINKS.map((link) => (
-              <li
-                key={link}
-                className='
-                  cursor-pointer
-                  hover:text-[#E1BF72]
-                  transition
-                '
-              >
-                {link}
+                {item}
               </li>
             ))}
           </ul>
         </div>
 
         {/* CONTATO */}
+
         <div>
           <h4
             className='
-            text-white
-            font-bold
-            mb-4
-            sm:mb-6
-          '
+              text-white
+
+              font-bold
+
+              mb-5
+            '
           >
             Contato
           </h4>
 
           <div
             className='
-            space-y-3
-            text-sm
-            sm:text-base
-            text-gray-400
-          '
+              space-y-3
+
+              text-gray-400
+            '
           >
             <p>contato@jurispag.com</p>
 
@@ -196,29 +202,33 @@ export function Footer() {
         </div>
       </div>
 
-      {/* COPYRIGHT */}
       <div
         className='
           relative
           z-10
 
-          mt-12
-          sm:mt-16
-          lg:mt-20
+
+          mt-14
+          sm:mt-20
+
 
           mx-5
           sm:mx-8
 
+
           border-t
+
           border-white/10
 
+
           pt-6
-          sm:pt-8
+
 
           text-center
 
-          text-xs
-          sm:text-sm
+
+          text-sm
+
 
           text-gray-500
         '

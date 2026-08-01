@@ -1,24 +1,23 @@
 import { useEffect, useState } from 'react';
 import { ArrowRight, Menu, Shield, X } from 'lucide-react';
 
-const NAV_ITEMS = ['Recursos', 'Benefícios', 'Planos', 'Depoimentos'] as const;
-
 export function Navbar() {
   const [loaded, setLoaded] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setLoaded(true), 30);
+    const timer = setTimeout(() => setLoaded(true), 30);
 
-    return () => clearTimeout(t);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <nav className='fixed top-0 left-0 right-0 z-50'>
       <div
         className={`
-          backdrop-blur-2xl
-          bg-[#08162F]/70
+          backdrop-blur-xl
+
+          bg-[#050B18]/80
 
           border-b
           border-white/10
@@ -26,7 +25,7 @@ export function Navbar() {
           transition-all
           duration-700
 
-          ${loaded ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0'}
+          ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}
         `}
       >
         <div
@@ -34,12 +33,10 @@ export function Navbar() {
             max-w-7xl
             mx-auto
 
-            px-4
-            sm:px-6
-            lg:px-8
+            px-5
+            sm:px-8
 
-            h-16
-            sm:h-20
+            h-20
 
             flex
             items-center
@@ -47,20 +44,15 @@ export function Navbar() {
           '
         >
           {/* LOGO */}
-          <div className='flex items-center gap-2 sm:gap-3'>
+          <div className='flex items-center gap-3'>
             <div
               className='
-                w-10
-                h-10
+                w-11
+                h-11
 
-                sm:w-12
-                sm:h-12
+                rounded-2xl
 
-                rounded-xl
-                sm:rounded-2xl
-
-                bg-linear-to-br
-
+                bg-gradient-to-br
                 from-[#183A72]
                 to-[#08162F]
 
@@ -68,20 +60,17 @@ export function Navbar() {
                 items-center
                 justify-center
 
-                shadow-[0_0_35px_rgba(200,155,60,.45)]
+                shadow-[0_0_35px_rgba(200,155,60,.35)]
               '
             >
-              <Shield size={20} className='text-[#E1BF72]' />
+              <Shield size={23} className='text-[#E1BF72]' />
             </div>
 
             <div>
               <h1
                 className='
-                  text-xl
-                  sm:text-2xl
-
+                  text-2xl
                   font-black
-
                   text-white
                 '
               >
@@ -89,55 +78,43 @@ export function Navbar() {
                 <span className='text-[#E1BF72]'>Pag</span>
               </h1>
 
-              <p
-                className='
-                  hidden
-                  sm:block
-
-                  text-xs
-                  text-gray-400
-                '
-              >
-                Gestão Jurídica Inteligente
-              </p>
+              <p className='hidden sm:block text-xs text-gray-400'>Gestão financeira jurídica</p>
             </div>
           </div>
 
-          {/* DESKTOP MENU */}
-          <div className='hidden lg:flex gap-10'>
-            {NAV_ITEMS.map((item) => (
-              <a
-                key={item}
-                href='#'
-                className='
-                  text-gray-300
-
-                  font-semibold
-
-                  hover:text-white
-
-                  transition
-                '
-              >
-                {item}
-              </a>
-            ))}
-          </div>
-
-          {/* ACTION */}
-          <div className='flex items-center gap-3'>
+          {/* DESKTOP ACTIONS */}
+          <div className='hidden md:flex items-center gap-4'>
             <button
               className='
-                hidden
-                sm:flex
-
-                rounded-full
-
                 px-6
                 py-3
 
-                bg-linear-to-r
+                rounded-full
 
+                border
+                border-[#E1BF72]/40
+
+                text-[#E1BF72]
+
+                font-bold
+
+                hover:bg-[#E1BF72]
+                hover:text-[#08162F]
+
+                transition
+              '
+            >
+              Demonstração
+            </button>
+
+            <button
+              className='
+                px-7
+                py-3
+
+                rounded-full
+
+                bg-gradient-to-r
                 from-[#C89B3C]
                 to-[#E1BF72]
 
@@ -145,57 +122,56 @@ export function Navbar() {
 
                 font-black
 
+                flex
                 items-center
-
                 gap-2
 
                 transition-transform
 
                 hover:scale-105
-
                 active:scale-95
               '
             >
               Teste Grátis
               <ArrowRight size={18} />
             </button>
-
-            {/* MOBILE MENU BUTTON */}
-            <button
-              onClick={() => setOpen(!open)}
-              className='
-                lg:hidden
-
-                w-10
-                h-10
-
-                rounded-xl
-
-                bg-white/10
-
-                flex
-                items-center
-                justify-center
-
-                text-white
-              '
-            >
-              {open ? <X size={22} /> : <Menu size={22} />}
-            </button>
           </div>
+
+          {/* MOBILE BUTTON */}
+          <button
+            onClick={() => setOpen(!open)}
+            className='
+              md:hidden
+
+              w-11
+              h-11
+
+              rounded-xl
+
+              bg-white/10
+
+              text-white
+
+              flex
+              items-center
+              justify-center
+            '
+          >
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
         </div>
 
         {/* MOBILE MENU */}
         <div
           className={`
-            lg:hidden
+            md:hidden
 
             overflow-hidden
 
             transition-all
             duration-300
 
-            ${open ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}
+            ${open ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}
           `}
         >
           <div
@@ -205,34 +181,35 @@ export function Navbar() {
 
               flex
               flex-col
-
-              gap-5
+              gap-3
             '
           >
-            {NAV_ITEMS.map((item) => (
-              <a
-                key={item}
-                href='#'
-                className='
-                  text-gray-300
-
-                  font-semibold
-
-                  hover:text-white
-                '
-                onClick={() => setOpen(false)}
-              >
-                {item}
-              </a>
-            ))}
-
             <button
               className='
-                sm:hidden
+                w-full
+
+                py-3
 
                 rounded-full
 
+                border
+                border-[#E1BF72]/40
+
+                text-[#E1BF72]
+
+                font-bold
+              '
+            >
+              Demonstração
+            </button>
+
+            <button
+              className='
+                w-full
+
                 py-3
+
+                rounded-full
 
                 bg-[#E1BF72]
 
@@ -243,7 +220,6 @@ export function Navbar() {
                 flex
                 justify-center
                 items-center
-
                 gap-2
               '
             >

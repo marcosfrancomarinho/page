@@ -28,7 +28,7 @@ export function Testimonials() {
         relative
         overflow-hidden
 
-        bg-[#08162F]
+        bg-[#050B18]
 
         py-20
         sm:py-28
@@ -39,17 +39,16 @@ export function Testimonials() {
         className='
           bg-[#183A72]
 
-          w-64
-          h-64
+          w-72
+          h-72
 
-          sm:w-96
-          sm:h-96
+          lg:w-[520px]
+          lg:h-[520px]
 
-          lg:w-[500px]
-          lg:h-[500px]
-
-          -left-32
+          -left-40
           top-10
+
+          opacity-30
         '
       />
 
@@ -57,25 +56,24 @@ export function Testimonials() {
         className='
           bg-[#C89B3C]
 
-          w-48
-          h-48
+          w-52
+          h-52
 
-          sm:w-64
-          sm:h-64
+          lg:w-[380px]
+          lg:h-[380px]
 
-          lg:w-[350px]
-          lg:h-[350px]
-
-          right-[-60px]
+          right-[-100px]
 
           bottom-0
+
+          opacity-20
         '
       />
 
       <SectionTitle
-        badge='QUEM USA'
-        title='Escritórios que cresceram com a JurisPag'
-        description={'Mais produtividade,\nmenos inadimplência\ne muito mais controle financeiro.'}
+        badge='DEPOIMENTOS'
+        title='Empresas que simplificaram sua gestão'
+        description={'Mais controle financeiro,\nmenos tarefas manuais\ne mais tempo para crescer.'}
       />
 
       <div
@@ -105,8 +103,15 @@ export function Testimonials() {
           <Reveal key={item.name} delay={index * 150}>
             <div
               className='
+                group
+
+                relative
+
+                overflow-hidden
+
                 rounded-3xl
-                lg:rounded-[34px]
+
+                lg:rounded-[36px]
 
                 border
 
@@ -116,9 +121,11 @@ export function Testimonials() {
 
                 backdrop-blur-xl
 
-                p-5
+                p-6
                 sm:p-8
                 lg:p-10
+
+                shadow-[0_20px_60px_rgba(0,0,0,.35)]
 
                 transition-all
 
@@ -126,110 +133,131 @@ export function Testimonials() {
 
                 hover:-translate-y-3
 
-                hover:scale-[1.03]
+                hover:border-[#E1BF72]/40
               '
             >
-              {/* STARS */}
+              {/* HOVER GLOW */}
               <div
                 className='
-                  flex
-                  gap-1
+                  absolute
+                  inset-0
 
-                  mb-4
-                  sm:mb-6
+                  bg-linear-to-br
+
+                  from-[#183A72]/20
+
+                  to-[#C89B3C]/10
+
+                  opacity-0
+
+                  group-hover:opacity-100
+
+                  transition-opacity
                 '
-              >
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <span key={i} className='text-sm sm:text-base'>
-                    ⭐
-                  </span>
-                ))}
-              </div>
+              />
 
-              {/* TEXT */}
-              <p
-                className='
-                  text-gray-200
-
-                  text-sm
-                  sm:text-base
-                  lg:text-lg
-
-                  leading-7
-                  sm:leading-8
-                '
-              >
-                "{item.text}"
-              </p>
-
-              {/* USER */}
-              <div
-                className='
-                  flex
-                  items-center
-
-                  gap-3
-                  sm:gap-4
-
-                  mt-6
-                  sm:mt-8
-                '
-              >
+              <div className='relative z-10'>
+                {/* STARS */}
                 <div
                   className='
-                    w-12
-                    h-12
-
-                    sm:w-16
-                    sm:h-16
-
-                    rounded-full
-
-                    bg-linear-to-br
-
-                    from-[#C89B3C]
-
-                    to-[#E1BF72]
-
                     flex
-                    items-center
-                    justify-center
+                    gap-1
 
-                    text-[#08162F]
-
-                    font-black
-
-                    text-lg
-                    sm:text-xl
+                    mb-5
                   '
                 >
-                  {item.name.charAt(0)}
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <span
+                      key={i}
+                      className='
+                        text-[#E1BF72]
+                        text-lg
+                      '
+                    >
+                      ★
+                    </span>
+                  ))}
                 </div>
 
-                <div>
-                  <h4
+                {/* TEXT */}
+                <p
+                  className='
+                    text-gray-300
+
+                    text-sm
+                    sm:text-base
+                    lg:text-lg
+
+                    leading-7
+                    sm:leading-8
+                  '
+                >
+                  "{item.text}"
+                </p>
+
+                {/* USER */}
+                <div
+                  className='
+                    flex
+                    items-center
+
+                    gap-4
+
+                    mt-8
+                  '
+                >
+                  <div
                     className='
-                      text-white
+                      w-14
+                      h-14
 
-                      font-bold
+                      rounded-full
 
-                      text-sm
-                      sm:text-lg
+                      bg-linear-to-br
+
+                      from-[#E1BF72]
+
+                      to-[#C89B3C]
+
+                      flex
+                      items-center
+                      justify-center
+
+                      text-[#08162F]
+
+                      font-black
+
+                      text-xl
+
+                      shadow-[0_0_25px_rgba(225,191,114,.25)]
                     '
                   >
-                    {item.name}
-                  </h4>
+                    {item.name.charAt(0)}
+                  </div>
 
-                  <p
-                    className='
-                      text-gray-400
+                  <div>
+                    <h4
+                      className='
+                        text-white
 
-                      text-xs
-                      sm:text-base
-                    '
-                  >
-                    {item.office}
-                  </p>
+                        font-bold
+
+                        text-base
+                      '
+                    >
+                      {item.name}
+                    </h4>
+
+                    <p
+                      className='
+                        text-gray-400
+
+                        text-sm
+                      '
+                    >
+                      {item.office}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

@@ -33,7 +33,6 @@ export function StepCard({ step, index }: StepCardProps) {
 
         duration-700
 
-
         ${
           visible
             ? 'opacity-100 translate-x-0'
@@ -52,94 +51,134 @@ export function StepCard({ step, index }: StepCardProps) {
     >
       <div
         className='
+          group
+
+          relative
+
+          overflow-hidden
+
           w-full
 
           lg:w-[46%]
 
-          bg-white
+          bg-white/5
+
+          backdrop-blur-xl
 
           rounded-3xl
-          lg:rounded-[30px]
+          lg:rounded-[32px]
 
           border
-          border-[#E6EBF3]
+
+          border-white/10
 
           p-5
           sm:p-7
           lg:p-10
 
-          shadow-[0_15px_50px_rgba(8,22,47,.10)]
+          shadow-[0_20px_60px_rgba(0,0,0,.35)]
 
-          transition-transform
+          transition-all
+
+          duration-300
 
           hover:-translate-y-2
+
+          hover:border-[#E1BF72]/40
         '
       >
-        {/* ICON */}
+        {/* GLOW HOVER */}
         <div
           className='
-            w-12
-            h-12
+            absolute
 
-            sm:w-14
-            sm:h-14
-
-            lg:w-16
-            lg:h-16
-
-            rounded-2xl
+            inset-0
 
             bg-linear-to-br
 
-            from-[#08162F]
-            to-[#183A72]
+            from-[#183A72]/20
 
-            text-[#E1BF72]
+            to-[#C89B3C]/10
 
-            flex
-            items-center
-            justify-center
+            opacity-0
 
-            mb-4
-            sm:mb-6
+            group-hover:opacity-100
+
+            transition-opacity
           '
-        >
-          {step.icon}
+        />
+
+        <div className='relative z-10'>
+          {/* ICON */}
+          <div
+            className='
+              w-12
+              h-12
+
+              sm:w-14
+              sm:h-14
+
+              lg:w-16
+              lg:h-16
+
+              rounded-2xl
+
+              bg-linear-to-br
+
+              from-[#183A72]
+
+              to-[#08162F]
+
+              text-[#E1BF72]
+
+              flex
+
+              items-center
+              justify-center
+
+              mb-4
+              sm:mb-6
+
+              shadow-[0_0_30px_rgba(225,191,114,.15)]
+            '
+          >
+            {step.icon}
+          </div>
+
+          {/* TITLE */}
+          <h3
+            className='
+              text-xl
+              sm:text-2xl
+              lg:text-3xl
+
+              font-black
+
+              text-white
+
+              mb-3
+              sm:mb-4
+            '
+          >
+            {step.title}
+          </h3>
+
+          {/* TEXT */}
+          <p
+            className='
+              text-sm
+              sm:text-base
+              lg:text-lg
+
+              text-gray-400
+
+              leading-6
+              sm:leading-8
+            '
+          >
+            {step.text}
+          </p>
         </div>
-
-        {/* TITLE */}
-        <h3
-          className='
-            text-xl
-            sm:text-2xl
-            lg:text-3xl
-
-            font-black
-
-            text-[#08162F]
-
-            mb-3
-            sm:mb-4
-          '
-        >
-          {step.title}
-        </h3>
-
-        {/* TEXT */}
-        <p
-          className='
-            text-sm
-            sm:text-base
-            lg:text-lg
-
-            text-[#8D97A8]
-
-            leading-6
-            sm:leading-8
-          '
-        >
-          {step.text}
-        </p>
       </div>
 
       {/* NUMBER DESKTOP */}
@@ -160,16 +199,20 @@ export function StepCard({ step, index }: StepCardProps) {
 
           rounded-full
 
-          bg-[#C89B3C]
+          bg-linear-to-br
+
+          from-[#C89B3C]
+
+          to-[#E1BF72]
 
           items-center
           justify-center
 
           font-black
 
-          text-white
+          text-[#08162F]
 
-          shadow-xl
+          shadow-[0_0_40px_rgba(225,191,114,.35)]
         '
       >
         {index + 1}
@@ -181,6 +224,7 @@ export function StepCard({ step, index }: StepCardProps) {
           absolute
 
           -top-4
+
           left-5
 
           lg:hidden
@@ -190,13 +234,14 @@ export function StepCard({ step, index }: StepCardProps) {
 
           rounded-full
 
-          bg-[#C89B3C]
+          bg-[#E1BF72]
 
           flex
+
           items-center
           justify-center
 
-          text-white
+          text-[#08162F]
 
           text-sm
 

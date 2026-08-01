@@ -18,40 +18,51 @@ export function FeatureCard({ icon, title, text, delay = 0 }: FeatureCardProps) 
           overflow-hidden
 
           rounded-3xl
-          sm:rounded-4xl
 
-          bg-white
+          bg-[#0D1B33]
+
           border
-          border-[#E8ECF3]
+          border-white/10
 
           p-5
           sm:p-7
           lg:p-10
 
-          shadow-[0_15px_40px_rgba(8,22,47,.08)]
+          shadow-[0_20px_60px_rgba(0,0,0,.35)]
 
           transition-all
           duration-300
 
-          hover:-translate-y-2
-          hover:scale-[1.02]
+          hover:-translate-y-3
+          hover:border-[#C89B3C]/40
+          hover:shadow-[0_25px_80px_rgba(200,155,60,.15)]
         '
       >
-        {/* efeito de brilho no hover */}
+        {/* brilho no hover */}
         <div
           className='
             absolute
             inset-0
+
             bg-linear-to-br
-            from-[#183A72]/5
-            to-[#C89B3C]/5
+            from-[#183A72]/20
+            to-[#C89B3C]/10
+
             opacity-0
+
             group-hover:opacity-100
+
             transition
+            duration-500
           '
         />
 
-        <div className='relative z-10'>
+        <div
+          className='
+            relative
+            z-10
+          '
+        >
           {/* ICON */}
           <div
             className='
@@ -64,24 +75,33 @@ export function FeatureCard({ icon, title, text, delay = 0 }: FeatureCardProps) 
               lg:w-16
               lg:h-16
 
+
               rounded-2xl
 
               bg-linear-to-br
-              from-[#0F2345]
-              to-[#183A72]
+
+              from-[#183A72]
+
+              to-[#08162F]
+
 
               text-[#E1BF72]
+
 
               flex
               items-center
               justify-center
 
-              shadow-xl
+
+              shadow-[0_10px_30px_rgba(24,58,114,.4)]
+
 
               mb-5
               sm:mb-7
 
+
               group-hover:scale-110
+
               transition
             '
           >
@@ -95,7 +115,8 @@ export function FeatureCard({ icon, title, text, delay = 0 }: FeatureCardProps) 
               sm:text-2xl
 
               font-black
-              text-[#08162F]
+
+              text-white
 
               mb-3
               sm:mb-5
@@ -110,7 +131,7 @@ export function FeatureCard({ icon, title, text, delay = 0 }: FeatureCardProps) 
               text-sm
               sm:text-base
 
-              text-[#8D97A8]
+              text-slate-400
 
               leading-6
               sm:leading-8

@@ -8,11 +8,11 @@ export function ScrollProgressBar({ progress }: ScrollProgressBarProps) {
     <div
       className='
         fixed
+
         top-0
         left-0
 
         h-0.5
-        sm:h-1
 
         w-full
 
@@ -21,8 +21,6 @@ export function ScrollProgressBar({ progress }: ScrollProgressBarProps) {
         pointer-events-none
 
         overflow-hidden
-
-        bg-transparent
       '
     >
       <div
@@ -31,7 +29,7 @@ export function ScrollProgressBar({ progress }: ScrollProgressBarProps) {
 
           origin-left
 
-          bg-linear-to-r
+          bg-gradient-to-r
 
           from-[#183A72]
 
@@ -39,11 +37,11 @@ export function ScrollProgressBar({ progress }: ScrollProgressBarProps) {
 
           to-[#E1BF72]
 
-          shadow-[0_0_12px_rgba(225,191,114,.6)]
+          shadow-[0_0_10px_rgba(225,191,114,.35)]
 
           transition-transform
 
-          duration-150
+          duration-200
 
           ease-out
         '

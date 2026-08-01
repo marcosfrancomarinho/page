@@ -1,39 +1,49 @@
 import { useEffect, useRef, useState, type RefObject } from 'react';
 
 /**
- * Reveals an element (sets `visible` to true) the first time it enters the
- * viewport, then disconnects the observer.
+ * Reveals an element once it enters the viewport.
+ * After revealing, the observer disconnects.
  */
 export function useReveal<T extends HTMLElement = HTMLDivElement>(
   options: IntersectionObserverInit = {},
 ): [RefObject<T | null>, boolean] {
   const ref = useRef<T | null>(null);
+
+  const optionsRef = useRef(options);
+
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const node = ref.current;
+    optionsRef.current = options;
+  }, [options]);
 
-    if (!node) return;
+  useEffect(() => {
+    const element = ref.current;
+
+    if (!element || visible) {
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setVisible(true);
+
           observer.disconnect();
         }
       },
       {
         threshold: 0.15,
-        ...options,
+        ...optionsRef.current,
       },
     );
 
-    observer.observe(node);
+    observer.observe(element);
 
     return () => {
       observer.disconnect();
     };
-  }, [options]);
+  }, [visible]);
 
   return [ref, visible];
 }

@@ -1,28 +1,46 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /**
- * Animates a number from 0 up to `end` using an ease-out cubic curve,
- * starting only once `visible` becomes true.
+ * Animates a number from 0 to `end`
+ * when the element becomes visible.
  */
 export function useCountUp(end: number, visible: boolean, duration = 1500): number {
   const [value, setValue] = useState(0);
 
+  const started = useRef(false);
+
   useEffect(() => {
-    if (!visible) return;
+    if (!visible || started.current) return;
 
-    let start: number | null = null;
-    let frame: number;
+    started.current = true;
 
-    const step = (timestamp: number) => {
-      if (start === null) start = timestamp;
-      const progress = Math.min((timestamp - start) / duration, 1);
+    let startTime: number | null = null;
+    let frameId: number;
+
+    const animate = (timestamp: number) => {
+      if (!startTime) {
+        startTime = timestamp;
+      }
+
+      const elapsed = timestamp - startTime;
+
+      const progress = Math.min(elapsed / duration, 1);
+
+      // ease-out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
+
       setValue(Math.floor(eased * end));
-      if (progress < 1) frame = requestAnimationFrame(step);
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(animate);
+      }
     };
 
-    frame = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(frame);
+    frameId = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+    };
   }, [visible, end, duration]);
 
   return value;

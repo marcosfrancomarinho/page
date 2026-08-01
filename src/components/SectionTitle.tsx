@@ -37,14 +37,19 @@ export function SectionTitle({ badge, title, description }: SectionTitleProps) {
 
           rounded-full
 
-          bg-[#E1BF72]/20
+          bg-[#E1BF72]/10
 
-          text-[#C89B3C]
+          border
+          border-[#E1BF72]/20
+
+          text-[#E1BF72]
 
           text-xs
           sm:text-sm
 
           font-bold
+
+          shadow-[0_0_25px_rgba(225,191,114,.12)]
         '
       >
         <Sparkles size={15} />
@@ -68,7 +73,7 @@ export function SectionTitle({ badge, title, description }: SectionTitleProps) {
 
           leading-tight
 
-          text-[#08162F]
+          text-white
         '
       >
         {title}
@@ -86,9 +91,13 @@ export function SectionTitle({ badge, title, description }: SectionTitleProps) {
           leading-7
           sm:leading-8
 
-          text-[#8D97A8]
+          text-gray-400
 
           whitespace-pre-line
+
+          max-w-2xl
+
+          mx-auto
         '
       >
         {description}

@@ -14,25 +14,36 @@ export function Reveal({ children, delay = 0, className = '', direction = 'up' }
   });
 
   const hiddenPosition = {
-    up: 'translate-y-10',
-    down: '-translate-y-10',
-    left: '-translate-x-10',
-    right: 'translate-x-10',
+    up: 'translate-y-8',
+    down: '-translate-y-8',
+    left: '-translate-x-8',
+    right: 'translate-x-8',
   };
 
   return (
     <div
       ref={ref}
       className={`
-        transition-[opacity,transform]
+        transition-all
 
         duration-700
 
-        ease-out
+        ease-[cubic-bezier(.16,1,.3,1)]
 
         will-change-transform
 
-        ${visible ? 'opacity-100 translate-x-0 translate-y-0' : `opacity-0 ${hiddenPosition[direction]}`}
+        ${
+          visible
+            ? `
+              opacity-100
+              translate-x-0
+              translate-y-0
+            `
+            : `
+              opacity-0
+              ${hiddenPosition[direction]}
+            `
+        }
 
         ${className}
       `}

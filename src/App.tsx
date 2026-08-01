@@ -14,29 +14,30 @@ import { ScrollToTopButton } from './components/ScrollToTopButton';
 
 export default function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
+
   const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
     let ticking = false;
 
     const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const doc = document.documentElement;
+      if (ticking) return;
 
-          const scrollable = doc.scrollHeight - doc.clientHeight;
+      window.requestAnimationFrame(() => {
+        const doc = document.documentElement;
 
-          const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
+        const scrollable = doc.scrollHeight - doc.clientHeight;
 
-          setScrollProgress(progress);
+        const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
 
-          setShowTop(window.scrollY > 400);
+        setScrollProgress(progress);
 
-          ticking = false;
-        });
+        setShowTop(window.scrollY > 500);
 
-        ticking = true;
-      }
+        ticking = false;
+      });
+
+      ticking = true;
     };
 
     window.addEventListener('scroll', onScroll, {
@@ -53,13 +54,17 @@ export default function App() {
   return (
     <div
       className='
-        font-sans
+        min-h-screen
 
         overflow-x-hidden
 
-        bg-[#F5F7FA]
+        bg-[#050B18]
 
-        text-[#08162F]
+        text-white
+
+        selection:bg-[#E1BF72]
+
+        selection:text-[#08162F]
       '
     >
       <GlobalStyles />
@@ -68,10 +73,11 @@ export default function App() {
 
       <Navbar />
 
-      {/* ESPAÇO DA NAVBAR */}
+      {/* OFFSET NAVBAR */}
       <div
         className='
           h-16
+
           sm:h-20
         '
       />

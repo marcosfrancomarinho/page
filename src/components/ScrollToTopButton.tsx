@@ -32,7 +32,12 @@ export function ScrollToTopButton({ visible }: ScrollToTopButtonProps) {
 
         rounded-full
 
-        bg-[#08162F]
+        bg-[#08162F]/80
+
+        backdrop-blur-xl
+
+        border
+        border-[#E1BF72]/30
 
         text-[#E1BF72]
 
@@ -40,20 +45,30 @@ export function ScrollToTopButton({ visible }: ScrollToTopButtonProps) {
         items-center
         justify-center
 
-        shadow-[0_10px_30px_rgba(8,22,47,.35)]
+        shadow-[0_0_30px_rgba(225,191,114,.15)]
 
         z-50
 
         transition-all
         duration-300
 
-        hover:scale-110
+        hover:
+        scale-110
 
-        active:scale-90
+        hover:
+        border-[#E1BF72]/80
+
+        hover:
+        shadow-[0_0_40px_rgba(225,191,114,.35)]
+
+        active:
+        scale-90
 
         focus:outline-none
+
         focus:ring-4
-        focus:ring-[#E1BF72]/30
+
+        focus:ring-[#E1BF72]/20
 
         ${
           visible
