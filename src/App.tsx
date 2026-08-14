@@ -1,103 +1,46 @@
-import { useEffect, useState } from 'react';
-
-import { GlobalStyles } from './components/GlobalStyles';
-import { ScrollProgressBar } from './components/ScrollProgressBar';
-import { Navbar } from './components/Navbar';
-import { Hero } from './components/Hero';
 import { Benefits } from './components/Benefits';
-import { Numbers } from './components/Numbers';
-import { HowItWorks } from './components/HowItWorks';
-import { Testimonials } from './components/Testimonials';
 import { FinalCTA } from './components/FinalCTA';
 import { Footer } from './components/Footer';
+import { GlobalStyles } from './components/GlobalStyles';
+import { Hero } from './components/Hero';
+import { HowItWorks } from './components/HowItWorks';
+import { Navbar } from './components/Navbar';
+import { Numbers } from './components/Numbers';
+import { ScrollProgressBar } from './components/ScrollProgressBar';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
+import { Testimonials } from './components/Testimonials';
+import { usePageScroll } from './scroll/hooks/usePageScroll';
 
 export default function App() {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const [showTop, setShowTop] = useState(false);
-
-  useEffect(() => {
-    let ticking = false;
-
-    const onScroll = () => {
-      if (ticking) return;
-
-      window.requestAnimationFrame(() => {
-        const doc = document.documentElement;
-
-        const scrollable = doc.scrollHeight - doc.clientHeight;
-
-        const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
-
-        setScrollProgress(progress);
-
-        setShowTop(window.scrollY > 500);
-
-        ticking = false;
-      });
-
-      ticking = true;
-    };
-
-    window.addEventListener('scroll', onScroll, {
-      passive: true,
-    });
-
-    onScroll();
-
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, []);
+  const { progress, showScrollToTop } = usePageScroll();
 
   return (
-    <div
-      className='
-        min-h-screen
-
-        overflow-x-hidden
-
-        bg-[#050B18]
-
-        text-white
-
-        selection:bg-[#E1BF72]
-
-        selection:text-[#08162F]
-      '
-    >
+    <div className='min-h-screen overflow-x-hidden bg-[#050B18] text-white selection:bg-[#E1BF72] selection:text-[#08162F]'>
       <GlobalStyles />
 
-      <ScrollProgressBar progress={scrollProgress} />
+      <a
+        href='#conteudo'
+        className='sr-only fixed top-3 left-3 z-[10000] rounded-lg bg-[#E1BF72] px-4 py-3 font-bold text-[#08162F] focus:not-sr-only'
+      >
+        Ir para o conteúdo
+      </a>
 
+      <ScrollProgressBar progress={progress} />
       <Navbar />
 
-      {/* OFFSET NAVBAR */}
-      <div
-        className='
-          h-16
-
-          sm:h-20
-        '
-      />
-
-      <main>
-        <section id='inicio'>
+      <main id='conteudo' tabIndex={-1}>
+        <section id='inicio' aria-labelledby='hero-title'>
           <Hero />
         </section>
 
-        <section id='recursos'>
-          <Benefits />
-        </section>
-
+        <Benefits />
         <Numbers />
 
-        <section id='como-funciona'>
+        <section id='como-funciona' aria-label='Como a JurisPag funciona'>
           <HowItWorks />
         </section>
 
-        <section id='depoimentos'>
+        <section id='depoimentos' aria-label='Depoimentos de clientes'>
           <Testimonials />
         </section>
 
@@ -105,8 +48,7 @@ export default function App() {
       </main>
 
       <Footer />
-
-      <ScrollToTopButton visible={showTop} />
+      <ScrollToTopButton visible={showScrollToTop} />
     </div>
   );
 }

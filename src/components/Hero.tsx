@@ -146,11 +146,12 @@ export function Hero() {
               ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
             `}
           >
-            <Sparkles size={16} />
+            <Sparkles size={16} aria-hidden='true' />
             Plataforma Jurídica Inteligente
           </span>
 
           <h1
+            id='hero-title'
             className={`
               mt-8
 
@@ -260,7 +261,8 @@ export function Hero() {
 
             `}
           >
-            <button
+            <a
+              href='#contato'
               className='
                 rounded-full
 
@@ -301,10 +303,11 @@ export function Hero() {
               '
             >
               Testar Grátis
-              <ArrowRight size={18} />
-            </button>
+              <ArrowRight size={18} aria-hidden='true' />
+            </a>
 
-            <button
+            <a
+              href='#como-funciona'
               className='
                 rounded-full
 
@@ -331,7 +334,7 @@ export function Hero() {
               '
             >
               Ver Demonstração
-            </button>
+            </a>
           </div>
 
           <div
