@@ -1,151 +1,22 @@
-import { GlowBlob } from './GlowBlob';
-import { NumberCard } from './NumberCard';
-import type { Stat } from '../scroll/types';
-
-const STATS: Stat[] = [
-  {
-    value: '500+',
-    label: 'Escritórios ativos',
-  },
-  {
-    value: '120 mil',
-    label: 'Pagamentos processados',
-  },
-  {
-    value: '98%',
-    label: 'Satisfação dos clientes',
-  },
-  {
-    value: '24/7',
-    label: 'Suporte disponível',
-  },
+const STATS = [
+  { value: '500+', label: 'escritórios ativos' },
+  { value: '120 mil', label: 'pagamentos processados' },
+  { value: '98%', label: 'de satisfação' },
 ];
 
 export function Numbers() {
   return (
-    <section
-      className='
-        relative
-        overflow-hidden
-
-        bg-[#050B18]
-
-        py-20
-        sm:py-28
-      '
-    >
-      <GlowBlob
-        className='
-          bg-[#183A72]
-
-          w-72
-          h-72
-
-          sm:w-[450px]
-          sm:h-[450px]
-
-          left-1/2
-          -translate-x-1/2
-
-          top-0
-
-          opacity-30
-        '
-      />
-
-      <div
-        className='
-          relative
-          z-10
-
-          max-w-7xl
-          mx-auto
-
-          px-5
-          sm:px-8
-        '
-      >
-        {/* TITLE */}
-        <div
-          className='
-            text-center
-
-            max-w-3xl
-
-            mx-auto
-
-            mb-12
-            sm:mb-16
-          '
-        >
-          <span
-            className='
-              inline-flex
-
-              px-4
-              py-2
-
-              rounded-full
-
-              bg-[#E1BF72]/10
-
-              text-[#E1BF72]
-
-              text-sm
-
-              font-bold
-            '
+    <section aria-label='Resultados da JurisPag' className='bg-[#050B18] px-5 py-10 sm:px-8 sm:py-14'>
+      <div className='mx-auto grid max-w-5xl grid-cols-1 overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] sm:grid-cols-3'>
+        {STATS.map((stat) => (
+          <div
+            key={stat.label}
+            className='border-b border-white/10 px-6 py-7 text-center last:border-b-0 sm:border-r sm:border-b-0 sm:last:border-r-0'
           >
-            RESULTADOS
-          </span>
-
-          <h2
-            className='
-              mt-5
-
-              text-3xl
-              sm:text-5xl
-
-              font-black
-
-              text-white
-            '
-          >
-            Números que mostram
-            <span className='text-[#E1BF72]'> o impacto</span>
-          </h2>
-
-          <p
-            className='
-              mt-4
-
-              text-gray-400
-
-              text-base
-              sm:text-lg
-            '
-          >
-            Tecnologia para simplificar a rotina financeira de escritórios jurídicos.
-          </p>
-        </div>
-
-        {/* CARDS */}
-        <div
-          className='
-            grid
-
-            grid-cols-1
-            sm:grid-cols-2
-            lg:grid-cols-4
-
-            gap-5
-            lg:gap-8
-          '
-        >
-          {STATS.map((stat, index) => (
-            <NumberCard key={stat.label} value={stat.value} label={stat.label} index={index} />
-          ))}
-        </div>
+            <strong className='block text-3xl font-black text-[#E1BF72] sm:text-4xl'>{stat.value}</strong>
+            <span className='mt-1 block text-sm text-slate-400'>{stat.label}</span>
+          </div>
+        ))}
       </div>
     </section>
   );
