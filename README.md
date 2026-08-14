@@ -1,7 +1,7 @@
 <h1 align="center">💳 JurisPag</h1>
 
 <p align="center">
-  Landing page responsiva para uma plataforma de gestão financeira voltada a escritórios jurídicos.
+  Landing page responsiva e focada em conversão para uma plataforma de gestão financeira jurídica.
 </p>
 
 <p align="center">
@@ -19,21 +19,18 @@
 
 A **JurisPag** apresenta uma solução fictícia para automatizar cobranças, acompanhar pagamentos e organizar a gestão financeira de escritórios de advocacia.
 
-O projeto foi desenvolvido com foco em conversão, hierarquia visual, componentes reutilizáveis, responsividade e acessibilidade.
+A página foi desenhada para comunicar o valor do produto em poucos segundos e levar o visitante ao teste gratuito, sem rotas adicionais ou excesso de conteúdo.
 
-## Principais recursos
+## Experiência
 
-- Hero com proposta de valor e indicadores animados;
-- benefícios organizados em cards;
-- dashboard financeiro ilustrativo;
-- fluxo de funcionamento;
-- métricas e prova social;
-- depoimentos;
-- chamadas para ação;
-- navegação responsiva;
-- barra de progresso e retorno ao topo;
+- Hero com promessa direta e dashboard ilustrativo;
+- CTAs de teste grátis e demonstração;
+- três benefícios centrais;
+- prova numérica compacta;
+- CTA final de conversão;
+- navegação simples e responsiva;
 - animações com suporte a `prefers-reduced-motion`;
-- navegação por teclado e foco visível;
+- navegação por teclado, foco visível e landmarks semânticos;
 - metadados básicos para SEO e compartilhamento.
 
 ## Tecnologias
@@ -51,9 +48,9 @@ O projeto foi desenvolvido com foco em conversão, hierarquia visual, componente
 src/
 ├── components/       # Seções e componentes visuais
 ├── scroll/
-│   ├── hooks/        # Scroll, reveal e contadores
+│   ├── hooks/        # Reveal e animações
 │   └── types.ts      # Tipos compartilhados
-├── App.tsx           # Composição da página
+├── App.tsx           # Composição da landing page
 ├── index.css         # Entrada do Tailwind CSS
 └── main.tsx          # Inicialização da aplicação
 ```
@@ -67,8 +64,6 @@ npm install
 npm run dev
 ```
 
-Acesse o endereço informado pelo Vite no terminal.
-
 ## Scripts
 
 | Comando | Descrição |
@@ -77,10 +72,6 @@ Acesse o endereço informado pelo Vite no terminal.
 | `npm run build` | Valida o TypeScript e gera o build |
 | `npm run lint` | Executa a análise estática |
 | `npm run preview` | Visualiza localmente o build |
-
-## Acessibilidade
-
-A interface inclui HTML em português, landmarks semânticos, skip link, rótulos para controles, estado acessível do menu mobile, navegação por teclado e redução de movimento conforme a preferência do sistema.
 
 ## Autor
 
