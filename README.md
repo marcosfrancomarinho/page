@@ -1,33 +1,64 @@
-# 💳 Landing Page Financeira
+<h1 align="center">💳 JurisPag</h1>
 
-Landing page moderna desenvolvida com **React, TypeScript, Vite e Tailwind CSS**, com foco em apresentação de produto, benefícios, métricas, funcionamento, depoimentos e conversão por CTA.
+<p align="center">
+  Landing page responsiva para uma plataforma de gestão financeira voltada a escritórios jurídicos.
+</p>
 
-## ✨ Recursos
+<p align="center">
+  <a href="https://page-seven-hazel.vercel.app"><strong>Ver demonstração</strong></a>
+</p>
 
-- Hero com métricas animadas
-- Seção de benefícios
-- Indicadores e números do produto
-- Fluxo de funcionamento
-- Depoimentos
-- CTA final
-- Barra de progresso de rolagem
-- Botão de retorno ao topo
-- Layout responsivo e animações
+<p align="center">
+  <img src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=111827" alt="React">
+  <img src="https://img.shields.io/badge/TypeScript-6-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Vite-8-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS">
+</p>
 
-## 🛠️ Tecnologias
+## Sobre o projeto
 
-<div><img src="https://skillicons.dev/icons?i=react,typescript,vite,tailwind" /></div>
+A **JurisPag** apresenta uma solução fictícia para automatizar cobranças, acompanhar pagamentos e organizar a gestão financeira de escritórios de advocacia.
 
-- React 19
-- TypeScript
-- Vite
-- Tailwind CSS 4
-- Framer Motion
-- React CountUp
-- Lucide React
-- React Helmet Async
+O projeto foi desenvolvido com foco em conversão, hierarquia visual, componentes reutilizáveis, responsividade e acessibilidade.
 
-## ⚙️ Executando localmente
+## Principais recursos
+
+- Hero com proposta de valor e indicadores animados;
+- benefícios organizados em cards;
+- dashboard financeiro ilustrativo;
+- fluxo de funcionamento;
+- métricas e prova social;
+- depoimentos;
+- chamadas para ação;
+- navegação responsiva;
+- barra de progresso e retorno ao topo;
+- animações com suporte a `prefers-reduced-motion`;
+- navegação por teclado e foco visível;
+- metadados básicos para SEO e compartilhamento.
+
+## Tecnologias
+
+- React 19;
+- TypeScript;
+- Vite;
+- Tailwind CSS 4;
+- Lucide React;
+- React Helmet Async.
+
+## Estrutura
+
+```text
+src/
+├── components/       # Seções e componentes visuais
+├── scroll/
+│   ├── hooks/        # Scroll, reveal e contadores
+│   └── types.ts      # Tipos compartilhados
+├── App.tsx           # Composição da página
+├── index.css         # Entrada do Tailwind CSS
+└── main.tsx          # Inicialização da aplicação
+```
+
+## Executando localmente
 
 ```bash
 git clone https://github.com/marcosfrancomarinho/page.git
@@ -36,19 +67,21 @@ npm install
 npm run dev
 ```
 
-## 📦 Scripts
+Acesse o endereço informado pelo Vite no terminal.
 
-```bash
-npm run dev
-npm run build
-npm run lint
-npm run preview
-```
+## Scripts
 
-## 💡 Objetivo
+| Comando | Descrição |
+| --- | --- |
+| `npm run dev` | Inicia o ambiente de desenvolvimento |
+| `npm run build` | Valida o TypeScript e gera o build |
+| `npm run lint` | Executa a análise estática |
+| `npm run preview` | Visualiza localmente o build |
 
-Projeto desenvolvido para praticar construção de landing pages profissionais, responsividade, animações, composição de componentes e experiência de conversão com React.
+## Acessibilidade
 
-## 👨‍💻 Autor
+A interface inclui HTML em português, landmarks semânticos, skip link, rótulos para controles, estado acessível do menu mobile, navegação por teclado e redução de movimento conforme a preferência do sistema.
 
-**Marcos Marinho** — https://github.com/marcosfrancomarinho
+## Autor
+
+Desenvolvido por [Marcos Marinho](https://github.com/marcosfrancomarinho).
